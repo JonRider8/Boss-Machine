@@ -2,11 +2,11 @@ const meetingRouter = require("express").Router();
 
 module.exports = meetingRouter;
 
-const { de } = require("faker/lib/locales.js");
 const {
   getAllFromDatabase,
   addToDatabase,
-  deleteAllFromDatabase
+  deleteAllFromDatabase,
+  createMeeting
 } = require("./db.js");
 
 meetingRouter.get("/", (req, res) => {
@@ -14,13 +14,8 @@ meetingRouter.get("/", (req, res) => {
 });
 
 meetingRouter.post("/", (req, res) => {
-  const meeting = req.body;
-  const newMeeting = addToDatabase("meetings", meeting);
-  if (newMeeting) {
+  const newMeeting = addToDatabase("meetings", createMeeting());
     res.status(201).send(newMeeting);
-  } else {
-    res.status(400).send("Invalid meeting data");
-  }
 });
 
 meetingRouter.delete("/", (req, res) => {
